@@ -1,24 +1,56 @@
 from app import app,login
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app.models import User,Post
-from app.forms import LoginForm, RegisterForm,PostForm
+from app.forms import LoginForm, RegisterForm,PostForm,UploadAvatar
 from app.operation import *
 from flask_login import login_user,logout_user, current_user,login_required
-
+import os
+from werkzeug.utils import  secure_filename
+from sqlalchemy import desc
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {
-        'username':'hx'
-    }
-
+    posts = Post.query.order_by(Post.id.desc())
     if current_user.is_authenticated:
         flash("已经登陆啦")
         user = current_user
-    return render_template('index.html', title='蛋憨 - Secret Space', user=current_user)
+    return render_template('index.html', title='蛋憨 - Secret Space', user=current_user,posts=posts)
 @app.route('/error')
 def error():
     return render_template('error.html', title='Error- >-<哎呀出错啦！都怪憨憨太憨啦（bu')
+
+@login_required
+@app.route('/space/<username>')
+def user_home(username):
+    """
+    用户主页
+    :param username:
+    :return:
+    """
+    username = current_user.username
+    userid = current_user.id
+    user_posts = Post.filter(userid=userid).order_by(Post.id.desc())
+def allowed_file(filename):
+    """
+    对文件名安全过滤
+    :param filename:
+    :return:
+    """
+    return True
+@login_required
+@app.route('/<username>/avatar', methods=['GET','POST'])
+def avatar_set(username):
+    username = current_user.username
+    form = UploadAvatar()
+    if form.validate_on_submit():
+        file = form.avatar.data
+        print(file)
+        filename = secure_filename(file.filename)
+        if file and allowed_file(file):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('index'))
+
+    return render_template('upload_avatar.html', title='上传你的头像把',form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

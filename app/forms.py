@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError
+from flask_wtf.file import FileRequired,FileField,FileAllowed
 from app.operation import *
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -31,3 +33,7 @@ class PostForm(FlaskForm):
     author = StringField('author')
     content = TextAreaField(validators=[DataRequired()])
     commit = SubmitField('submit')
+
+class UploadAvatar(FlaskForm):
+    avatar = FileField('avatar',validators=[FileRequired('文件未选择'), FileAllowed(['jpg', 'png'], 'Images only!')])
+    submit = SubmitField('Submit')

@@ -7,15 +7,19 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(120))
+    avatar = db.Column(db.String(120))
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-    def is_authenticated(self):
-        return True
-    def is_active(self):
-        return True
-    def is_anonymous(self):
-        return False
+    # def is_authenticated(self):
+    #     return True
+    # def is_active(self):
+    #     return True
+    # def is_anonymous(self):
+    #     return False
+    def avatar(self, imgmd5):
+        imgmd5 = self.avatar.encode('utf-8')
+        return './static/avatar/{}'.format(imgmd5)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

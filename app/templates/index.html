@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if current_user.is_anonymous %}
+    {% if current_user.is_anonymous or not current_user.is_authenticated %}
         <h1>Hi</h1>
         <p>快点去注册啦！oao</p>
     {% else %}
     <h1>Hi, {{ user.username }}!</h1>
-    {% endif %}
+
     {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+    <div><p>{{ post.author }} says: <b>{{ post.body }}</b> —— {{ post.timestamp }}</p></div>
     {% endfor %}
+    {% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 <html>
     <head>
       {% if title %}
-      <title>{{ title }} - Microblog</title>
+      <title>{{ title }} - 蛋憨</title>
       {% else %}
       <title>Welcome to Microblog</title>
       {% endif %}
@@ -10,13 +10,16 @@
         <div>
         Secret Space:
             <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
-            <a href="{{ url_for('published') }}">Post</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-            <a href="{{ url_for('published') }}">Post</a>
+            {% if current_user.is_anonymous  %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+
+            {% elif current_user.is_authenticated %}
+                <a href="{{ url_for('published') }}">Post</a>
+                <a href="{{ url_for('avatar_set',username=current_user.username) }}">Avatar Set</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+
+
             {% endif %}
         </div>
         <hr>

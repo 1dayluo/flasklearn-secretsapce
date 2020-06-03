@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<center>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
@@ -17,8 +17,7 @@
         {% for error in form.date.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-    </p>
-    <p>
+
         {{ form.author.label }}<br>
         {{ form.author(size=32) }}
         {% for error in form.author.errors %}
@@ -27,7 +26,7 @@
     </p>
         <p>
         {{ form.content.label }}<br>
-        {{ form.content(size=900)}}
+        {{ form.content(size=30000)}}
         {% for error in form.content.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
@@ -35,5 +34,6 @@
 
     <p>{{ form.commit() }}</p>
 </form>
+    </center>
 
 {% endblock  %}
