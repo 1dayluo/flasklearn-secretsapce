@@ -8,7 +8,32 @@
     <h1>Hi, {{ user.username }}!</h1>
 
     {% for post in posts %}
-    <div><p>{{ post.author }} says: <b>{{ post.body }}</b> —— {{ post.timestamp }}</p></div>
+    <div class="col-md-6 col-md-offset-3">
+<!--        <img src="{{ current_user.user_avatar() }}" alt="user's avatar" height="30" width="30" />-->
+<!--        <p>{{ post.author.username }} says:</p>-->
+<!--        <p><b>{{ post.body }}</b> —— {{ post.timestamp }}</p></div>-->
+
+        <div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <li>
+                <img src="{{ post.author.user_avatar() }}" alt="user's avatar" height="30" width="30" />
+                <a href="{{ url_for('userpage',username=post.author.username) }}">{{ post.author.username }}</a>
+            </li>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <p><b>{{ post.title }}</b></br></p>
+            <div class="container">
+                <p >{{ post.body | safe }} </br>{{ post.timestamp }}</p>
+
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
     {% endfor %}
     {% endif %}
 {% endblock %}

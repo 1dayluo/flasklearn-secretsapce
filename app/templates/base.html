@@ -1,5 +1,8 @@
 <html>
     <head>
+        <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+        <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       {% if title %}
       <title>{{ title }} - 蛋憨</title>
       {% else %}
@@ -7,21 +10,28 @@
       {% endif %}
     </head>
     <body>
-        <div>
-        Secret Space:
-            <a href="{{ url_for('index') }}">Home</a>
+        <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('index') }}">蛋憨</a>
+            </div>
             {% if current_user.is_anonymous  %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
-
+            <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-user"></span>Login</a></li>
+            <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-user"></span>Register</a></li>
+            </ul>
             {% elif current_user.is_authenticated %}
-                <a href="{{ url_for('published') }}">Post</a>
-                <a href="{{ url_for('avatar_set',username=current_user.username) }}">Avatar Set</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('published') }}"><span class="glyphicon glyphicon-user"></span>Post</a></li>
+                <li><a href="{{ url_for('avatar_set',username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span>Avatar</a></li>
+                    <li><a href="{{ url_for('edit_profile',username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span>Edit Profile</a></li>
+                <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-user"></span>Logout</a></li>
 
+                </ul>
 
             {% endif %}
         </div>
+        </nav>
         <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}

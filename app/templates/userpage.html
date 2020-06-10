@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="col-md-6 col-md-offset-3">
+    <table>
+
+        <tr valign="top">
+            <td><img src="{{  user.user_avatar()  }}" height="100",weight="100">
+            </td>
+            <td><h1>{{ user.username }}</h1>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            </td>
+
+
+        </tr>
+        <tr valign="top">
+            <td></td>
+        </tr>
+        <tr valign="top">
+            <td><p>签名: {{ user.about_me }}</p></td>
+        </tr>
+
+    </table>
+    <hr>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    </div>
+{% endblock %}

@@ -34,3 +34,8 @@ def get_designated_user(user):
     user = User.query.get(user)
     return user
 
+def set_avatar(cur_user,upload_path):
+    user = User.query.get(cur_user)
+    user.avatar = upload_path
+    db.session.commit()
+    return user

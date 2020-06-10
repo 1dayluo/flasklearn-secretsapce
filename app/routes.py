@@ -1,16 +1,19 @@
 from app import app,login
 from flask import render_template, flash, redirect, url_for, request
 from app.models import User,Post
-from app.forms import LoginForm, RegisterForm,PostForm,UploadAvatar
+from app.forms import LoginForm, RegisterForm,PostForm,UploadAvatar,EditProfileForm
 from app.operation import *
 from flask_login import login_user,logout_user, current_user,login_required
 import os
-from werkzeug.utils import  secure_filename
+from werkzeug.utils import secure_filename
 from sqlalchemy import desc
 @app.route('/')
 @app.route('/index')
 def index():
+    page = int(request.args.get('page',1))
+    per_page = int(request.args.get('per_page',2))
     posts = Post.query.order_by(Post.id.desc())
+
     if current_user.is_authenticated:
         flash("已经登陆啦")
         user = current_user
@@ -41,17 +44,55 @@ def allowed_file(filename):
 @app.route('/<username>/avatar', methods=['GET','POST'])
 def avatar_set(username):
     username = current_user.username
-    form = UploadAvatar()
+    form = EditProfileForm()
     if form.validate_on_submit():
         file = form.avatar.data
-        print(file)
-        filename = secure_filename(file.filename)
+
+        # filename = secure_filename(file.filename)
         if file and allowed_file(file):
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('index'))
+            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], "{}.jpg".format(current_user.id))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], "{}.jpg".format(current_user.id)))
+            current_user.avatar = "{}.jpg".format(current_user.id)
+            db.session.commit()
+            # set_avatar(current_user.id, "{}.jpg".format(current_user.id))
+            return redirect(url_for('userpage',username=username))
+
 
     return render_template('upload_avatar.html', title='上传你的头像把',form=form)
+@login_required
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+def edit_profile(username):
+    username = current_user.username
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        print('okkkkkkkkkkkk')
+        file = form.avatar.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
 
+        # filename = secure_filename(file.filename)
+        if file and allowed_file(file):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], "{}.jpg".format(current_user.id)))
+            set_avatar(current_user.id, "{}.jpg".format(current_user.id))
+            return redirect(url_for('index'))
+        if not file:
+            pass
+    elif request.method == 'GET':
+        form.avatar.data = current_user.avatar
+        form.about_me.data = current_user.about_me
+
+    return render_template('edit_profile.html', title='修改用户资料',form=form)
+
+@login_required
+@app.route('/<username>')
+def userpage(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(user_id=user.id)
+
+    # posts = {}
+    # print('-------------', posts.author.username)
+
+    return render_template('userpage.html', user=user, posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -100,7 +141,7 @@ def published():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             print(current_user)
-            post = Post(title=form.title.data,body=form.content.data, user_id=current_user.id, author=form.author.data)
+            post = Post(title=form.title.data,body=form.content.data, user_id=current_user.id)
             db.session.add(post)
             db.session.commit()
             return redirect(url_for('post_page',pid=post.id))

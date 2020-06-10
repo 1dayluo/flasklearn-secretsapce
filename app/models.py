@@ -7,23 +7,24 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(120))
-    avatar = db.Column(db.String(120))
+    avatar = db.Column(db.String(300), default='default.jpg')
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    about_me = db.Column(db.String(200),default=':)')
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-    # def is_authenticated(self):
-    #     return True
-    # def is_active(self):
-    #     return True
-    # def is_anonymous(self):
-    #     return False
-    def avatar(self, imgmd5):
-        imgmd5 = self.avatar.encode('utf-8')
-        return './static/avatar/{}'.format(imgmd5)
+
+    def user_avatar(self):
+    #     imgmd5 = self.avatar.encode('utf-8')
+        return './static/avatar/{}'.format(self.avatar)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
         self.password = self.password_hash
+
+    def set_avatar(self, avatar_path):
+        self.avatar = avatar_path
 
     def check_password(self, password):
         return check_password_hash(self.password, generate_password_hash(password))
@@ -38,8 +39,6 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    author = db.Column(db.Text)
-
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
