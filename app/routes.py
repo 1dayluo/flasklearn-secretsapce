@@ -22,17 +22,7 @@ def index():
 def error():
     return render_template('error.html', title='Error- >-<哎呀出错啦！都怪憨憨太憨啦（bu')
 
-@login_required
-@app.route('/space/<username>')
-def user_home(username):
-    """
-    用户主页
-    :param username:
-    :return:
-    """
-    username = current_user.username
-    userid = current_user.id
-    user_posts = Post.filter(userid=userid).order_by(Post.id.desc())
+
 def allowed_file(filename):
     """
     对文件名安全过滤
@@ -65,7 +55,6 @@ def edit_profile(username):
     username = current_user.username
     form = EditProfileForm()
     if form.validate_on_submit():
-        print('okkkkkkkkkkkk')
         file = form.avatar.data
         current_user.about_me = form.about_me.data
         db.session.commit()
@@ -74,9 +63,10 @@ def edit_profile(username):
         if file and allowed_file(file):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], "{}.jpg".format(current_user.id)))
             set_avatar(current_user.id, "{}.jpg".format(current_user.id))
-            return redirect(url_for('index'))
+
         if not file:
             pass
+        return redirect(url_for('index'))
     elif request.method == 'GET':
         form.avatar.data = current_user.avatar
         form.about_me.data = current_user.about_me
@@ -137,6 +127,15 @@ def logout():
 @app.route('/published', methods=['GET', 'POST'])
 @login_required
 def published():
+    mkd = '''
+    # header
+    ## header2
+    [picture](http://www.example.com)
+    * 1
+    * 2
+    * 3
+    **bold**
+    '''
     form = PostForm()
     if current_user.is_authenticated:
         if form.validate_on_submit():
@@ -147,9 +146,7 @@ def published():
             return redirect(url_for('post_page',pid=post.id))
     return render_template('published.html', title='发表新的文章', form=form)
 @app.route('/post/<pid>')
-@login_required
 def post_page(pid):
-    flash(current_user.id)
-    post = Post.query.filter_by(user_id=current_user.id, id=pid).first_or_404()
+    post = Post.query.filter_by(id=pid).first_or_404()
 
     return render_template("post.html", title=post.title, post=post)

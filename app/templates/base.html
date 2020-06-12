@@ -23,7 +23,7 @@
             {% elif current_user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url_for('published') }}"><span class="glyphicon glyphicon-user"></span>Post</a></li>
-                <li><a href="{{ url_for('avatar_set',username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span>Avatar</a></li>
+                <li><a href="{{ url_for('userpage',username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span>Home</a></li>
                     <li><a href="{{ url_for('edit_profile',username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span>Edit Profile</a></li>
                 <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-user"></span>Logout</a></li>
 

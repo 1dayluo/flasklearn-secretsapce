@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, EqualTo, Email, ValidationError,Length,Optional
-from flask_wtf.file import FileRequired,FileField,FileAllowed
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
+from wtforms.validators import DataRequired, EqualTo, Email, ValidationError,Length,optional
+from flask_wtf.file import FileRequired, FileAllowed
 from app.operation import *
 
 class LoginForm(FlaskForm):
@@ -39,6 +39,6 @@ class UploadAvatar(FlaskForm):
     submit = SubmitField('Submit')
 
 class EditProfileForm(FlaskForm):
-    avatar = FileField('avatar',validators=[Optional(),FileRequired('文件未选择'), FileAllowed(['jpg', 'png'], 'Images only!')])
+    avatar = FileField('avatar',validators=[optional(), FileAllowed(['jpg', 'png'], 'Images only!')])
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')

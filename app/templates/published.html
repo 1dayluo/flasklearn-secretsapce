@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+
 <div class="col-md-6 col-md-offset-3">
 <form action="" method="post" novalidate>
 
@@ -26,15 +27,34 @@
 <!--        {% endfor %}-->
     </p>
         <p>
-        {{ form.content.label }}<br>
-        {{ form.content(size=30000)}}
+<!--        {{ form.content.label }}<br>-->
+<!--        {{ form.content(size=30000)}}-->
         {% for error in form.content.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-    </p>
+        <div id="editormd" class="form-control">
+            {{ form.content(style="display:none;") }}
+        </div>
+<div id="test-editormd">
+</div>
+
+
 
     <p>{{ form.commit() }}</p>
 </form>
 </div>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+        var testEditor;
 
+        $(function () {
+            testEditor = editormd("editormd", {
+                width: "100%",
+                height: "100%",
+                syncScrolling: "single",
+                path: "{{ url_for('static',filename='editormd/lib/') }}"
+            });
+        });
+    </script>
 {% endblock  %}
+
