@@ -8,3 +8,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = basedir+"/app/static/avatar"
     DEBUG = True
+    CSRF_ENABLED = True

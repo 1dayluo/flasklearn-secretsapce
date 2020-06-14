@@ -1,7 +1,7 @@
 from app import app,login
 from flask import render_template, flash, redirect, url_for, request
-from app.models import User,Post
-from app.forms import LoginForm, RegisterForm,PostForm,UploadAvatar,EditProfileForm
+from app.models import User,Post,Reply
+from app.forms import LoginForm, RegisterForm,PostForm,UploadAvatar,EditProfileForm,ReplyForm
 from app.operation import *
 from flask_login import login_user,logout_user, current_user,login_required
 import os
@@ -127,15 +127,6 @@ def logout():
 @app.route('/published', methods=['GET', 'POST'])
 @login_required
 def published():
-    mkd = '''
-    # header
-    ## header2
-    [picture](http://www.example.com)
-    * 1
-    * 2
-    * 3
-    **bold**
-    '''
     form = PostForm()
     if current_user.is_authenticated:
         if form.validate_on_submit():
@@ -145,8 +136,15 @@ def published():
             db.session.commit()
             return redirect(url_for('post_page',pid=post.id))
     return render_template('published.html', title='发表新的文章', form=form)
-@app.route('/post/<pid>')
+@app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):
+    form = ReplyForm()
+    if form.validate_on_submit():
+        body = form.reply.data
+        reply = Reply(body=body,pid=pid,user_id=current_user.id)
+        db.session.add(reply)
+        db.session.commit()
+        redirect(url_for('post_page',pid=pid))
     post = Post.query.filter_by(id=pid).first_or_404()
-
-    return render_template("post.html", title=post.title, post=post)
+    replys = Reply.query.filter_by(pid=pid)
+    return render_template("post.html", title=post.title, post=post, replys=replys, form=form)

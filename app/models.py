@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(120))
     avatar = db.Column(db.String(300), default='default.jpg')
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    reply = db.relationship('Reply', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(200),default=':)')
 
     def __repr__(self):
@@ -39,7 +40,18 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reply = db.relationship('Reply', backref='post', lazy='dynamic')
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
 
+class Reply(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    pid = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+
+    def __repr__(self):
+        return '<Reply {}>'.format(self.body)

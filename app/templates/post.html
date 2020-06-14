@@ -1,10 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="col-md-18 col-md-offset-3">
+<table>
+    <tr>
+        <td>
+<!--            <div class="col-md-18 col-md-offset-3">-->
+                <div class="">
 
-<div class="col-md-6 col-md-offset-3">
+                <h1> {{ post.title }} </h1>
+                {{ post.body|markdown|safe }}
 
-    {{ post.title }}
-    {{ post.body|markdown|safe }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="bg-danger">
+            {% for reply in replys %}
+                <p>{{ reply.timestamp }} | {{ reply.author.username }} :<br /></p>
+                {{ reply.body }} <br/>
+            {% endfor %}
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <div class="col-md-6 col-md-offset-3">
+
+        <form action="" method="post" novalidate enctype="multipart/form-data">
+
+        {{ form.hidden_tag() }}
+
+            <p>
+            {{ form.reply.label }}<br>
+            {{ form.reply(size=32) }}
+            {% for error in form.reply.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </p>
+        <p>{{ form.submit() }}</p>
+
+         </form>
+        </div>
+        </td>
+    </tr>
+
+</table>
 
 </div>
 

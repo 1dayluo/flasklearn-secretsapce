@@ -39,6 +39,10 @@ class UploadAvatar(FlaskForm):
     submit = SubmitField('Submit')
 
 class EditProfileForm(FlaskForm):
-    avatar = FileField('avatar',validators=[optional(), FileAllowed(['jpg', 'png'], 'Images only!')])
+    avatar = FileField('avatar',validators=[optional(),FileAllowed(['jpg', 'png'], 'Images only!')])
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
+
+class ReplyForm(FlaskForm):
+    reply = TextAreaField('reply', validators=[DataRequired()])
+    submit = SubmitField('submit')

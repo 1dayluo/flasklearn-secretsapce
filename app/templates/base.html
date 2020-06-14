@@ -32,16 +32,26 @@
             {% endif %}
         </div>
         </nav>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+        <div class="row">
+            <div class="col-md-4" id="index-page"  >
+                <img src="/static/bk/2.jpg" style="position:fixed" />
+            </div>
+             <div class="col-md-8 col-md-offset-0">
+                <hr>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+             </div>
+        </div>
     </body>
+<footer>
+    首图画师twi:@Ixy
+</footer>
 </html>
