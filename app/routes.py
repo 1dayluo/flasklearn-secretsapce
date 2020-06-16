@@ -61,6 +61,7 @@ def edit_profile(username):
 
         # filename = secure_filename(file.filename)
         if file and allowed_file(file):
+
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], "{}.jpg".format(current_user.id)))
             set_avatar(current_user.id, "{}.jpg".format(current_user.id))
 
@@ -136,6 +137,24 @@ def published():
             db.session.commit()
             return redirect(url_for('post_page',pid=post.id))
     return render_template('published.html', title='发表新的文章', form=form)
+@app.route('/edit/<pid>', methods=['GET','POST'])
+@login_required
+def edit_post(pid):
+    post = Post.query.filter_by(id=pid).first()
+    form = PostForm()
+
+    if form.validate_on_submit():
+
+        post.body = form.content.data
+        post.title = form.title.data
+        db.session.commit()
+        return redirect(url_for('post_page', pid=post.id))
+
+    form.content.data = post.body
+    form.title.data = post.title
+    return render_template('published.html',title='--编辑文章', form=form)
+
+
 @app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):
     form = ReplyForm()

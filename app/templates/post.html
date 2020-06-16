@@ -15,6 +15,14 @@
     </tr>
     <tr>
         <td>
+<!--            <div class="col-md-18 col-md-offset-3">-->
+                {% if current_user.id == post.user_id %}
+                   <a href="{{ url_for('edit_post',pid=post.id) }}">编辑</a>
+                {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
             <div class="bg-danger">
             {% for reply in replys %}
                 <p>{{ reply.timestamp }} | {{ reply.author.username }} :<br /></p>

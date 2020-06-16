@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
-from wtforms.validators import DataRequired, EqualTo, Email, ValidationError,Length,optional
+from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length, Optional,optional
 from flask_wtf.file import FileRequired, FileAllowed
 from app.operation import *
 
@@ -35,14 +35,20 @@ class PostForm(FlaskForm):
     commit = SubmitField('submit')
 
 class UploadAvatar(FlaskForm):
-    avatar = FileField('avatar',validators=[FileRequired('文件未选择'), FileAllowed(['jpg', 'png'], 'Images only!')])
+    avatar = FileField('avatar',validators=[Optional(), FileRequired('文件未选择'), FileAllowed(['jpg', 'png'], 'Images only!')])
     submit = SubmitField('Submit')
 
 class EditProfileForm(FlaskForm):
-    avatar = FileField('avatar',validators=[optional(),FileAllowed(['jpg', 'png'], 'Images only!')])
+    avatar = FileField('avatar', validators=[optional(), FileAllowed(['jpg', 'png'], 'Images only!')])
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
-
+    def validate(self):
+        if not self.avatar.data and not self.about_me.data:
+            msg = 'At least one of avatar and about_me must be set'
+            self.avatar.errors.append(msg)
+            self.about_me.errors.append(msg)
+            return False
+        return True
 class ReplyForm(FlaskForm):
     reply = TextAreaField('reply', validators=[DataRequired()])
     submit = SubmitField('submit')
