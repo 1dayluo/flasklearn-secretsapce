@@ -55,3 +55,4 @@ class ReplyForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     submit = SubmitField
+    

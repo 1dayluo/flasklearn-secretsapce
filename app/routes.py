@@ -162,6 +162,7 @@ def delete_post(pid):
     db.session.commit()
     return redirect('/')
 
+
 @app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):
     form = ReplyForm()
