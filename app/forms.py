@@ -52,3 +52,6 @@ class EditProfileForm(FlaskForm):
 class ReplyForm(FlaskForm):
     reply = TextAreaField('reply', validators=[DataRequired()])
     submit = SubmitField('submit')
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField

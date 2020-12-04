@@ -154,6 +154,13 @@ def edit_post(pid):
     form.title.data = post.title
     return render_template('published.html',title='--编辑文章', form=form)
 
+@app.route('/del/<pid>')
+@login_required
+def delete_post(pid):
+    post = Post.query.filter_by(id=pid).first_or_404()
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/')
 
 @app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="col-md-18 col-md-offset-3">
 <table>
     <tr>
@@ -17,7 +18,8 @@
         <td>
 <!--            <div class="col-md-18 col-md-offset-3">-->
                 {% if current_user.id == post.user_id %}
-                   <a href="{{ url_for('edit_post',pid=post.id) }}">编辑</a>
+                    <a href="{{ url_for('edit_post',pid=post.id) }}">编辑</a>
+                    <a href="{{ url_for('delete_post',pid=post.id) }}">删除</a>
                 {% endif %}
         </td>
     </tr>
@@ -34,17 +36,18 @@
     </tr>
     <tr>
         <td>
-        <div class="col-md-6 col-md-offset-3">
-
+        <!-- <div class="col-md-6 col-md-offset-3"> -->
+		<div id='reply'>
         <form action="" method="post" novalidate enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
 
             <p>
             {{ form.reply.label }}<br>
-            {{ form.reply(size=32) }}
-            {% for error in form.reply.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            {{ form.reply(size=200) }}
+			{% for error in form.reply.errors %}
+			<span style="color: red;">[{{ error }}]</span>
+
             {% endfor %}
             </p>
         <p>{{ form.submit() }}</p>
@@ -55,8 +58,6 @@
     </tr>
 
 </table>
-
-</div>
 
 
 {% endblock  %}
