@@ -152,7 +152,7 @@ def edit_post(pid):
 
     form.content.data = post.body
     form.title.data = post.title
-    return render_template('published.html',title='--编辑文章', form=form)
+    return render_template('published.html',title=':编辑文章', form=form)
 
 @app.route('/del/<pid>')
 @login_required
@@ -165,6 +165,7 @@ def delete_post(pid):
 
 @app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):
+    """Reply Topic"""
     form = ReplyForm()
     if form.validate_on_submit():
         body = form.reply.data
@@ -175,3 +176,21 @@ def post_page(pid):
     post = Post.query.filter_by(id=pid).first_or_404()
     replys = Reply.query.filter_by(pid=pid)
     return render_template("post.html", title=post.title, post=post, replys=replys, form=form)
+
+
+@app.route('/del_r/<pid>')
+def del_reply(pid):
+    reply = Reply.query.filter_by(id=pid).first_or_404()
+    db.session.delete(reply)
+    db.session.commit()
+    return redirect("/post/{}".format(reply.pid))
+
+
+@app.route('/post/<pid>/<uid>')
+@login_required
+def just_see(pid, uid):
+    """只看某人功能"""
+    replys = Reply.query.filter_by(pid=pid, user_id=uid).all()
+    post = Post.query.filter_by(id=replys[0].pid).first_or_404()
+    return render_template("post.html", title=post.title, post=post, replys=replys, form=ReplyForm())
+    

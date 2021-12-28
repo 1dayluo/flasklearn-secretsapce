@@ -20,18 +20,27 @@
                 {% if current_user.id == post.user_id %}
                     <a href="{{ url_for('edit_post',pid=post.id) }}">编辑</a>
                     <a href="{{ url_for('delete_post',pid=post.id) }}">删除</a>
+ 
             
                 {% endif %}
+                    <a href="{{ url_for('post_page',pid=post.id) }}">全部评论</a>      
         </td>
     </tr>
     <tr>
         <td>
+            <div>
+
+            </div>
             <div class="bg-danger">
             {% for reply in replys %}
-                <p>{{ reply.timestamp }} | {{ reply.author.username }} :<br /></p>
+                <p>{{ reply.timestamp }} | {{ reply.author.username }} : <br /></p>
                 {{ reply.body }} <br/>
+                {% if current_user.id == reply.user_id %}
+                <a href="{{ url_for('del_reply',fpid=post.id, pid=reply.id) }}">删除</a> |
+                {% endif %}
+                <a href="{{ url_for('just_see',pid=post.id, uid=reply.user_id) }}">只看ta</a>
             {% endfor %}
-
+     
             </div>
         </td>
     </tr>

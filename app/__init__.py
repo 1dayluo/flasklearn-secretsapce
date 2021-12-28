@@ -15,4 +15,7 @@ app.debug = True
 
 login = LoginManager(app)
 login.login_view = 'login'
+@app.before_first_request
+def create_tables():
+    db.create_all()
 from app import routes, models
