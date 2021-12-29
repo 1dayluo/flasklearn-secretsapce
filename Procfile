@@ -1,1 +1,1 @@
-flask run --reload
+web: gunicorn app:app
