@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
 
     def user_avatar(self):
     #     imgmd5 = self.avatar.encode('utf-8')
-        return './static/avatar/{}'.format(self.avatar)
+        return '/static/avatar/{}'.format(self.avatar)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -40,6 +40,7 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    tag = db.Column(db.Text, default='default')
     reply = db.relationship('Reply', backref='post', lazy='dynamic')
 
     def __repr__(self):

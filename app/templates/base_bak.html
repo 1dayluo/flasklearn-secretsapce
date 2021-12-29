@@ -23,9 +23,8 @@
       {% endif %}
     </head>
     <body>
-  
         <nav class="navbar navbar-default">
-
+        <div class="container-fluid">
             <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('index') }}">蛋憨</a>
             </div>
@@ -44,12 +43,12 @@
                 </ul>
 
             {% endif %}
-
+        </div>
         </nav>
-        <div class="container-fluid">
+
         <div class="row">
             <div class="left" id="index-page"  >
-                <img class='left' src="/static/bk/2.jpg" style="position:fixed" />
+                <img src="/static/bk/2.jpg" style="position:fixed" />
             </div>
              <div class="right">
                 <hr>
@@ -64,7 +63,7 @@
                 {% endwith %}
                 {% block content %}{% endblock %}
              </div>
-        </div>
+
     </div>
     </body>
 <footer>

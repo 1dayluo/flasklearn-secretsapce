@@ -1,0 +1,36 @@
+.left {
+    float: left;
+    width: 30.3%;
+    position: relative;
+
+    
+}
+.right {
+    float: right;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0%;
+    position: relative;
+    border-left: #d7f6fa solid 3px; ;
+
+
+    width: 70%;
+}
+.left img {
+    max-width: 100%;
+}
+
+.post div {
+    max-width: 100%;
+}
+
+.post table {
+    width: 100%;
+    padding-left: 10px;
+}
+
+@media screen and (max-width: 600px) {
+    .right{
+      width: 100%;
+    }
+  }

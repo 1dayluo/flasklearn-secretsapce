@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="col-md-18 col-md-offset-3">
-<table>
+<div class="post">
+<table class="post">
     <tr>
         <td>
 <!--            <div class="col-md-18 col-md-offset-3">-->
@@ -31,14 +31,20 @@
             <div>
 
             </div>
-            <div class="bg-danger">
+            <div class="replys">
+
             {% for reply in replys %}
-                <p>{{ reply.timestamp }} | {{ reply.author.username }} : <br /></p>
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                <img src="{{ reply.author.user_avatar() }}" alt="avatar" height="30" width="30" /><a href="{{ url_for('userpage',username=reply.author.username) }}">{{ reply.author.username }} </a>
+                </div>  
                 {{ reply.body }} <br/>
+                {{ reply.timestamp.strftime("%Y-%m-%d %H:%M") }}
                 {% if current_user.id == reply.user_id %}
-                <a href="{{ url_for('del_reply',fpid=post.id, pid=reply.id) }}">删除</a> |
+                    <a href="{{ url_for('del_reply',fpid=post.id, pid=reply.id) }}">删除</a> |
                 {% endif %}
                 <a href="{{ url_for('just_see',pid=post.id, uid=reply.user_id) }}">只看ta</a>
+            </div>
             {% endfor %}
      
             </div>
