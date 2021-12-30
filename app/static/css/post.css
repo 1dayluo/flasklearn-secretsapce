@@ -1,0 +1,62 @@
+.tag {
+    display: inline-block;
+    border-radius: 17px;
+    background-color: #f08a04;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 10px;
+    padding: 4px;
+    width: 100px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.tag span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    right:9px;
+    transition: 0.5s;
+}
+
+.tag span:after {
+    content: '\00bb';  /* CSS Entities. 如果用的是 HTML Entities, 请改成 &#8594;*/
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -60px;
+    transition: 0.5s;
+}
+
+.tag:hover span {
+    padding-right: 60px;
+  }
+
+.tag:hover span:after {
+opacity: 1;
+right: 0;
+}
+
+.post-all{
+
+    background-color: #fffafa;
+    border-radius: 3%;
+    border-style:dotted;
+    border-color: rgb(255, 190, 137);
+    /* background-position:100% 100%; */
+}
+
+.post-title {
+
+    background-color: #ffc26c;
+}
+
+.post-content {
+    left: 20px;
+}
+h1 {
+    color:rgb(255, 237, 214);
+}
+

@@ -38,7 +38,10 @@
 <div id="test-editormd">
 </div>
 
-
+    {{ form.tag.label }}:{{ form.tag(size=10) }}
+    {% for error in form.tag.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
 
     <p>{{ form.commit() }}</p>
 </form>

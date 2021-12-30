@@ -32,6 +32,7 @@ class PostForm(FlaskForm):
     date = StringField()
     author = StringField('author')
     content = TextAreaField(validators=[DataRequired()])
+    tag = TextAreaField('tag',validators=[Length(max=10)],default='default')
     commit = SubmitField('submit')
 
 class UploadAvatar(FlaskForm):

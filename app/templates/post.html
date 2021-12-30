@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-
+<link rel="stylesheet" type="text/css" href="/static/css/post.css" >
 <div class="post">
 <table class="post">
     <tr>
         <td>
 <!--            <div class="col-md-18 col-md-offset-3">-->
-                <div class="">
+    
 
-                <h1> {{ post.title }} </h1>
+            <div class="post-all">
+                    <div class="post-title">
+                        <h1 class="title"> {{ post.title }} </h1>
+                    </div>
+                <div class="tag" ><span class="tag">{{ post.tag }} </span></div>
+                <div class="post-content">
                     <p class="bg-light text-dark">{{ post.body|markdown|safe }} </p>
-
+                </div>
             </div>
+
         </td>
     </tr>
     <tr>

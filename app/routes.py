@@ -6,7 +6,7 @@ from app.operation import *
 from flask_login import login_user,logout_user, current_user,login_required
 import os
 from werkzeug.utils import secure_filename
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 @app.route('/')
 @app.route('/index')
 def index():
@@ -132,7 +132,7 @@ def published():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             print(current_user)
-            post = Post(title=form.title.data,body=form.content.data, user_id=current_user.id)
+            post = Post(title=form.title.data,body=form.content.data, user_id=current_user.id,tag=form.tag.data)
             db.session.add(post)
             db.session.commit()
             return redirect(url_for('post_page',pid=post.id))
@@ -147,6 +147,7 @@ def edit_post(pid):
 
         post.body = form.content.data
         post.title = form.title.data
+        post.tag = form.tag.data
         db.session.commit()
         return redirect(url_for('post_page', pid=post.id))
 
@@ -194,3 +195,9 @@ def just_see(pid, uid):
     post = Post.query.filter_by(id=replys[0].pid).first_or_404()
     return render_template("post.html", title=post.title, post=post, replys=replys, form=ReplyForm())
     
+
+@app.route('/tags')
+@login_required
+def tags():
+    posts = Post.query.all()
+    return render_template('tags.html',posts=posts)

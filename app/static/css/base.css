@@ -1,3 +1,12 @@
+/* .all{
+    font-family: Monospace;
+} */
+
+body{
+
+    font-family:"Microsoft Yahei";
+    
+}
 .left {
     float: left;
     width: 30.3%;
@@ -27,6 +36,18 @@
 .post table {
     width: 100%;
     padding-left: 10px;
+}
+
+.saytag {
+
+    font-size: 1;
+    width: auto;
+    height: 20px;
+    /* background-color: rgb(180, 53, 14); */
+    color: rgb(255, 181, 132);
+    border-color: rgb(198, 166, 199);
+    /* border-style: solid; */
+    /* border-radius: 30px; */
 }
 
 @media screen and (max-width: 600px) {
