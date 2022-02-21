@@ -12,7 +12,7 @@
                     <div class="post-title">
                         <h1 class="title"> {{ post.title }} </h1>
                     </div>
-                <div class="tag" ><span class="tag">{{ post.tag }} </span></div>
+                <a href="{{ url_for('tag_view', tag=post.tag) }}"><div  class="tag"><span class="tag">{{ post.tag }} </span></div></a>
                 <div class="post-content">
                     <p class="bg-light text-dark">{{ post.body|markdown|safe }} </p>
                 </div>

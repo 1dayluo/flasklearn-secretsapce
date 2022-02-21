@@ -7,6 +7,9 @@ from flask_login import login_user,logout_user, current_user,login_required
 import os
 from werkzeug.utils import secure_filename
 from sqlalchemy import desc, func
+
+WEB_TITLE = '蛋憨 - Secret Space'
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -17,7 +20,7 @@ def index():
     if current_user.is_authenticated:
         flash("已经登陆啦")
         user = current_user
-    return render_template('index.html', title='蛋憨 - Secret Space', user=current_user,posts=posts)
+    return render_template('index.html', title=WEB_TITLE, user=current_user,posts=posts)
 @app.route('/error')
 def error():
     return render_template('error.html', title='Error- >-<哎呀出错啦！都怪憨憨太憨啦（bu')
@@ -116,7 +119,7 @@ def register():
         add_user(form.username.data, form.email.data, form.password.data)
         return redirect(url_for('login'))
 
-    return render_template('register.html', title='蛋憨 - 注册用户 Secret Space', form=form)
+    return render_template('register.html', title=WEB_TITLE, form=form)
 
 @app.route('/logout')
 @login_required
@@ -166,7 +169,7 @@ def delete_post(pid):
 
 @app.route('/post/<pid>', methods=['POST','GET'])
 def post_page(pid):
-    """Reply Topic"""
+    """Post View && load reply page"""
     form = ReplyForm()
     if form.validate_on_submit():
         body = form.reply.data
@@ -190,14 +193,22 @@ def del_reply(pid):
 @app.route('/post/<pid>/<uid>')
 @login_required
 def just_see(pid, uid):
-    """只看某人功能"""
+    """See the particular people's reply """
     replys = Reply.query.filter_by(pid=pid, user_id=uid).all()
     post = Post.query.filter_by(id=replys[0].pid).first_or_404()
     return render_template("post.html", title=post.title, post=post, replys=replys, form=ReplyForm())
     
+@app.route('/post/tag/<tag>')
+@login_required
+def tag_view(tag):
+    """All post from tags"""
+    posts = Post.query.filter_by(tag=tag)
+    return render_template('index.html', title=WEB_TITLE, user=current_user,posts=posts)
+
 
 @app.route('/tags')
 @login_required
 def tags():
+    """Show all tags"""
     posts = Post.query.all()
     return render_template('tags.html',posts=posts)
